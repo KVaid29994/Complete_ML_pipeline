@@ -1,0 +1,53 @@
+📝 1. Importing Libraries
+📝 2. Create a Logs Folder
+        - log_dir = 'logs': sets the log directory name as "logs"
+        - os.makedirs(log_dir, exist_ok=True): creates a folder named logs if it doesn’t exist.
+
+📝 3. Setup Logger
+            ## logger = logging.getLogger("data_ingestion")
+        - Creates a logger object named "data_ingestion" (you can name it anything).
+
+            ## logger.setLevel(logging.DEBUG)
+        - Sets its logging level to DEBUG, so it will log everything from DEBUG level upward (DEBUG, INFO, WARNING, ERROR, CRITICAL).
+
+📝 4. Console Handler
+         ## console_handler = logging.StreamHandler()
+         ##console_handler.setLevel("DEBUG")
+
+                Creates a handler that will output logs to the console/terminal
+                    Sets this handler to show all logs from DEBUG level up.
+                ✔️ So logs will appear on screen.
+
+📝 5. File Handler
+        ## log_file_path = os.path.join(log_dir, "data_ingestion.log") 
+        ## file_handler = logging.FileHandler(log_file_path)
+        ##file_handler.setLevel("DEBUG")
+
+        Creates a file handler → logs will be written into logs/data_ingestion.log.
+            Also set to DEBUG → captures everything to the file.
+            ✔️ So logs will also be saved in a log file.
+
+📝 6. Define Log Format
+        formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')   
+        console_handler.setFormatter(formatter)
+        file_handler.setFormatter(formatter) 
+
+        formatter defines how your logs will look:
+        ** 2025-05-01 14:03:12 - data_ingestion - INFO - some message ***
+
+        You apply this format to both console and file handlers.
+
+📝 7. Attach Handlers to Logger
+        ## logger.addHandler(console_handler)
+        ## logger.addHandler(file_handler)
+
+        Finally, attaches both handlers (console + file) to your logger.
+
+        ✔️ Now every log you send to logger will print on console + write to file simultaneously.
+
+🚩 Why is this useful?
+✅ Helps in debugging without printing everywhere
+✅ Logs are persisted in files → you can check history
+✅ You can have different formats/levels for file vs console if needed
+✅ Centralized logging is easier to manage for big pipelines
+
