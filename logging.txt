@@ -51,3 +51,17 @@
 ✅ You can have different formats/levels for file vs console if needed
 ✅ Centralized logging is easier to manage for big pipelines
 
+🔥 Logging Levels Explained
+In Python’s logging module, logging levels are used to categorize the severity or importance of log messages.
+
+Each level defines what kind of information should be logged. By setting a level, you control which messages are recorded (anything equal to or higher than that level).
+
+Here’s a breakdown of the standard levels, from lowest to highest severity:
+
+Level	   Numeric Value	Description
+DEBUG	        10	        Detailed info, useful for debugging (shows internal workings).
+INFO	        20	        General events confirming things are working as expected.
+WARNING	        30	        Something unexpected happened, but the app can continue.
+ERROR	        40	        A more serious problem; functionality might be affected.
+CRITICAL	50	        A serious error; program might not be able to continue.
+
