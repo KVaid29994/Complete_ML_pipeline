@@ -105,11 +105,11 @@ def save_metrics(metrics_dict : dict, file_path : str):
 
 def main():
     try:
-        clf = load_model('./models/model.pkl')
+        clf = load_model('./models/random_forest_model.pkl')
         test_data = load_data('./data/processed/test_tfidf.csv')
 
         X_test = test_data.iloc[:,:-1].values
-        y_test = test_data[:,-1].values
+        y_test = test_data.iloccle[:,-1].values
 
         metrics = evaluate_model(clf, X_test, y_test)
         save_metrics(metrics, './metrics/model_evaluation.json')    
@@ -118,5 +118,6 @@ def main():
         logger.error(f"Error in main function: {e}")
         raise
 
-if main.__name__ == '__main__':
+if __name__ == "__main__":
     main()
+    logger.debug("Model evaluation script started")
