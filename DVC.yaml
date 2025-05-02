@@ -23,7 +23,7 @@ stages:
     - feature_engineering.max_features
     outs:
     - data/processed
-  model_training:
+  model_building:
     cmd: python src/model_training.py
     deps:
     - data/processed
@@ -32,18 +32,12 @@ stages:
     - model_training.n_estimators
     - model_training.random_state
     outs:
-    - models/model.pkl
+    - models/random_forest_model.pkl
   model_evaluation:
     cmd: python src/model_evaluation.py
     deps:
-    - models/model.pkl
+    - models/random_forest_model.pkl
     - src/model_evaluation.py
     metrics:
-    - reports/metrics.json
-params:
-- dvclive/params.yaml
-metrics:
-- dvclive/metrics.json
-plots:
-- dvclive/plots/metrics:
-    x: step
+    - metrics/model_evaluation.json:
+        cache: false
