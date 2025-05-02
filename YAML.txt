@@ -1,0 +1,64 @@
+✅ What is YAML?
+- Stands for “YAML Ain’t Markup Language”
+- A human-readable data format, used for configuration files, data exchange
+- Similar to JSON, but more readable and less syntax-heavy
+
+1) ✅ Key Basics & Syntax:
+Key-Value Pairs
+
+name: John
+age: 30
+
+2) Indentation matters (use spaces, NOT tabs)
+3) Lists
+hobbies:
+  - reading
+  - cycling
+  - hiking
+4) Nested structures
+person:
+  name: John
+  address:
+    city: New York
+    zip: 10001
+
+5) Comments (use #)
+6) Multiple documents (using ---)
+
+---
+name: John
+---
+name: Jane
+
+7) ✅ Important Rules:
+Indent consistently (recommended: 2 spaces or 4 spaces)
+No tabs allowed
+Strings don’t need quotes unless they contain special characters or start with : or @
+YAML is case-sensitive
+
+8) Data Types:
+YAML supports various data types including strings, numbers, booleans, nulls, and complex types like lists and dictionaries. Strings don’t need to be quoted unless they contain special characters.
+age: 30         # Integer
+married: true   # Boolean
+children: null  # Null
+
+9. Multiline Strings:
+YAML allows for multiline strings using | (preserves newlines) or > (folds newlines into spaces).
+description: |
+  This is a
+  multiline string
+10. Anchors & Aliases:
+Anchors (&) and aliases (*) allow you to reuse content. An anchor defines a value, and an alias refers back to it.
+default: &default_settings
+  timeout: 30
+  retries: 3
+
+server1:
+  <<: *default_settings
+  host: server1.example.com
+
+
+11. YAML vs JSON:
+YAML is a superset of JSON, meaning any valid JSON is also valid YAML. However, YAML is more user-friendly due to its readability and concise syntax.
+10. File Extensions and Usage:
+YAML files typically have the .yaml or .yml extension and are commonly used for configuration files, data exchange between languages, and more in DevOps, CI/CD pipelines, and other contexts.
