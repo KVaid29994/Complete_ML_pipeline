@@ -6,6 +6,8 @@ import matplotlib.pyplot as plt
 import pickle
 from sklearn.metrics import accuracy_score , precision_score, recall_score, roc_auc_score
 import logging
+from dvclive import Live, live
+import yaml
 
 
 # Set up logging configuration
@@ -29,6 +31,24 @@ console_handler.setFormatter(formatter)
 
 logger.addHandler(file_handler)
 logger.addHandler(console_handler)
+
+def load_params(params_path: str) -> dict:
+    '''load parameters from a YAML file'''
+    try:
+        with open(params_path, 'r') as file:
+            params = yaml.safe_load(file)
+        logger.debug(f"Parameters loaded from {params_path}.")
+        return params
+    except FileNotFoundError as e:
+        logger.error(f"Parameters file not found: {e}")
+        raise
+    except yaml.YAMLError as e:
+        logger.error(f"Error parsing YAML file: {e}")
+        raise
+    except Exception as e:
+        logger.error(f"An unexpected error occurred: {e}")
+        raise
+
 
 def load_model(file_path : str):
     """
@@ -105,6 +125,8 @@ def save_metrics(metrics_dict : dict, file_path : str):
 
 def main():
     try:
+        params = load_params(params_path= 'params.yaml')
+
         clf = load_model('./models/random_forest_model.pkl')
         test_data = load_data('./data/processed/test_tfidf.csv')
 
@@ -112,6 +134,14 @@ def main():
         y_test = test_data.iloc[:,-1].values
 
         metrics = evaluate_model(clf, X_test, y_test)
+
+        with Live(save_dvc_exp = True) as live:
+            live.log_metric("accuracy", accuracy_score(X_test, y_test))
+            live.log_metric("precision", precision_score(X_test, y_test))
+            live.log_metric("recall",recall_score(X_test, y_test))
+
+            live.log_params(params)
+        
         save_metrics(metrics, './metrics/model_evaluation.json')    
         logger.debug("Model evaluation completed successfully")
     except Exception as e:
