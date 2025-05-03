@@ -4,6 +4,7 @@ import os
 import logging
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.decomposition import TruncatedSVD
+import yaml
 
 
 #create a logging function
@@ -27,6 +28,23 @@ file_handler.setFormatter(formatter)
 
 logger.addHandler(file_handler)
 logger.addHandler(console_handler)
+
+def load_params(params_path: str) -> dict:
+    '''load parameters from a YAML file'''
+    try:
+        with open(params_path, 'r') as file:
+            params = yaml.safe_load(file)
+        logger.debug(f"Parameters loaded from {params_path}.")
+        return params
+    except FileNotFoundError as e:
+        logger.error(f"Parameters file not found: {e}")
+        raise
+    except yaml.YAMLError as e:
+        logger.error(f"Error parsing YAML file: {e}")
+        raise
+    except Exception as e:
+        logger.error(f"An unexpected error occurred: {e}")
+        raise
 
 
 def load_data(file_path:str) -> pd.DataFrame:
@@ -95,8 +113,10 @@ def main():
     Main function to load data, apply TF-IDF, and save the processed data.
     """
     try:
-        max_features = 50 # Set the maximum number of features for TF-IDF
-        # Load the data
+        params = load_params("params.yaml")
+        # Load parameters from the YAML file
+        max_features = params['feature_engineering']['max_features'] 
+                # Load the data
         train_data = load_data('./data/interim/train_processed.csv')
         test_data = load_data('./data/interim/test_processed.csv')
 
